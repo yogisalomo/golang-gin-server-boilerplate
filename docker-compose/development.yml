@@ -1,0 +1,19 @@
+version: '3'
+services:
+  db:
+    image: postgres:14.4
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: 12341234 # Doesn't really matter because this compose is for local development
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./scripts/db_init.sql:/docker-entrypoint-initdb.d/db_init.sql
+  app:
+    build: ..
+    ports:
+      - "8000:8000"
+    volumes:
+      - "..:/app"
+    depends_on:
+      - db
